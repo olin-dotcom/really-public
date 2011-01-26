@@ -1,0 +1,11 @@
+<h1>New post</h1>
+
+<% if user_signed_in? %>
+	<%= render 'form' %>
+<% else %>
+	<%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %> to post.
+<% end %>
+
+<p>
+<%= link_to 'Back', posts_path %>
+</p>

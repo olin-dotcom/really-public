@@ -1,0 +1,7 @@
+This is an application based upon two railscasts that integrate
+devise and omniauth to authenticate against twitter and facebook.
+
+http://railscasts.com/episodes/209-introducing-devise
+http://railscasts.com/episodes/235-omniauth-part-1
+http://railscasts.com/episodes/236-omniauth-part-2
+
