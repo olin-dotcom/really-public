@@ -5,11 +5,19 @@
     android:layout_height="fill_parent"
     >
 
+    <EditText
+        android:id="@+id/IpEditText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="10.41.88.162"
+        />
+
     <Button
         android:id="@+id/RefreshButton"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:text="Refresh"
+        android:onClick="doRefresh"
         />
     <ListView
         android:id="@android:id/list"
