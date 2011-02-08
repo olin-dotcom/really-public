@@ -1,3 +1,6 @@
 Simple Feedback application
  * mobile API
  * no users
+
+Need to check out the rails app into it's own directory to push
+to Heroku.
