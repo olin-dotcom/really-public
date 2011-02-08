@@ -19,8 +19,8 @@ public final class R {
     public static final class id {
         public static final int notetext=0x7f070000;
         public static final int post=0x7f070003;
-        public static final int postbutton=0x7f070001;
-        public static final int posttext=0x7f070002;
+        public static final int postbutton=0x7f070002;
+        public static final int posttext=0x7f070001;
         public static final int preferences=0x7f070005;
         public static final int refresh=0x7f070004;
     }

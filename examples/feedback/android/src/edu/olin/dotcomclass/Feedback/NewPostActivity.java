@@ -1,7 +1,9 @@
 package edu.olin.dotcomclass.Feedback;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -23,13 +25,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mchang
- * Date: 2/8/11
- * Time: 2:08 AM
- * To change this template use File | Settings | File Templates.
- */
+
 public class NewPostActivity extends Activity implements View.OnClickListener {
     Button postButton;
     EditText postText;
@@ -45,7 +41,10 @@ public class NewPostActivity extends Activity implements View.OnClickListener {
         postText = (EditText) findViewById(R.id.posttext);
     }
 
-    public void onClick(View view) {
+    /**
+     * should be way more error checking here with the threaded result
+     */
+    public HttpResponse postNote() {
         HttpClient client = new DefaultHttpClient();
         String ipAddress;
         String postString = postText.getText().toString();
@@ -68,11 +67,35 @@ public class NewPostActivity extends Activity implements View.OnClickListener {
             HttpResponse httpResponse = client.execute(httpPost);
 
             Log.i(TAG, httpResponse.getStatusLine().toString());
+            return httpResponse;
         } catch( Throwable t ) {
             Log.e(TAG, "Post exception",t );
             Toast.makeText(this, "Post failed " + t.toString(), Toast.LENGTH_LONG);
+            return null;
         }
+    }
 
+    public void onClick(View view) {
+        new PostNoteTask().execute();
+    }
+
+    public void allDone() {
         finish();
     }
+
+    /**
+     * so wrong, but it works :) no testing for errors
+     */
+    private class PostNoteTask extends AsyncTask<Void, Void, HttpResponse> {
+
+        protected HttpResponse doInBackground(Void... voids) {
+            return postNote();
+        }
+
+        protected void onPostExecute(HttpResponse httpResponse) {
+            Log.i(TAG,"Post done: " + httpResponse.getStatusLine().toString() );
+            allDone();
+        }
+    }
+
 }

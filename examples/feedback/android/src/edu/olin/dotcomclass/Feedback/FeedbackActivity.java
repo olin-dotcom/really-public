@@ -1,8 +1,11 @@
 package edu.olin.dotcomclass.Feedback;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -68,7 +71,7 @@ public class FeedbackActivity extends ListActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch( item.getItemId() ) {
             case R.id.refresh:
-                doRefresh();
+                new RefreshNoteListTask().execute();
                 return true;
             case R.id.preferences:
                 startActivity(new Intent(this, EditPreferences.class));
@@ -81,7 +84,7 @@ public class FeedbackActivity extends ListActivity
         }
     }
 
-    public void doRefresh() {
+    public String refreshNoteList() {
         String ipAddress;
 
         Log.i(TAG, "Refresh");
@@ -102,31 +105,57 @@ public class FeedbackActivity extends ListActivity
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             String responseBody = client.execute(httpGet, responseHandler);
             Log.i(TAG, responseBody);
-            parseResponse(responseBody);
+            return(responseBody);
         } catch( Throwable t ) {
-            Log.e(TAG, "doRefresh exception",t );
+            Log.e(TAG, "refreshNoteList exception",t );
             Toast.makeText(this, "Refresh failed " + t.toString(), Toast.LENGTH_LONG);
+            return null;
         }
     }
 
     public void parseResponse(String response) {
-        try {
-            Log.i(TAG, "Parsing JSON");
-            noteArray.clear();
-            JSONArray jsonArray = new JSONArray(response);
-            Log.i(TAG, "Parsed " + jsonArray.length() + " entries");
-            for( int i=0; i<jsonArray.length(); i++ ) {
-                JSONObject noteRecord = jsonArray.getJSONObject(i);
-                JSONObject note = noteRecord.getJSONObject("note");
-                String noteDescription = note.getString("description");
-                Log.i(TAG, noteDescription );
-                noteArray.add(noteDescription);
-            }
+        if( response != null ) {
+            try {
+                Log.i(TAG, "Parsing JSON");
+                noteArray.clear();
+                JSONArray jsonArray = new JSONArray(response);
+                Log.i(TAG, "Parsed " + jsonArray.length() + " entries");
+                for( int i=0; i<jsonArray.length(); i++ ) {
+                    JSONObject noteRecord = jsonArray.getJSONObject(i);
+                    JSONObject note = noteRecord.getJSONObject("note");
+                    String noteDescription = note.getString("description");
+                    Log.i(TAG, noteDescription );
+                    noteArray.add(noteDescription);
+                }
 
-            noteAdapter.notifyDataSetChanged();
-        } catch( JSONException j ) {
-            Log.e(TAG, "JSON Exception", j );
-            Toast.makeText(this, "JSON Parsing error " + j.toString(), Toast.LENGTH_LONG);
+                noteAdapter.notifyDataSetChanged();
+            } catch( JSONException j ) {
+                Log.e(TAG, "JSON Exception", j );
+                Toast.makeText(this, "JSON Parsing error " + j.toString(), Toast.LENGTH_LONG);
+            }
         }
     }
+
+    private class RefreshNoteListTask extends AsyncTask<Void, Void, String> {
+        private ProgressDialog progressDialog;
+
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(FeedbackActivity.this);
+            progressDialog.setMessage("Loading...");
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        protected String doInBackground(Void... voids) {
+
+            return refreshNoteList();
+        }
+
+        protected void onPostExecute(String serverResponse) {
+            progressDialog.dismiss();
+            parseResponse( serverResponse );
+        }
+    }
+
 }
