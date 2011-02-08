@@ -57,7 +57,7 @@ public class NewPostActivity extends Activity implements View.OnClickListener {
         } else {
             ipAddress = prefsIpAddress;
         }
-        String url = "http://" + ipAddress + ":3000/notes";
+        String url = "http://" + ipAddress + "/notes";
         HttpPost httpPost = new HttpPost(url);
 
         Log.i(TAG, "Posting " + postString + " to " + url);

@@ -95,7 +95,7 @@ public class FeedbackActivity extends ListActivity
         } else {
             ipAddress = prefsIpAddress;
         }
-        String url = "http://" + ipAddress + ":3000/notes.json";
+        String url = "http://" + ipAddress + "/notes.json";
         HttpGet httpGet = new HttpGet(url);
 
         try {
