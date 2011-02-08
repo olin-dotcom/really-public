@@ -4,7 +4,11 @@ class NotesController < ApplicationController
   # GET /notes
   # GET /notes.xml
   def index
-    @notes = Note.all
+    if params[:limit]
+      @notes = Note.all :limit => params[:limit], :order => "created_at DESC"
+    else
+      @notes = Note.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
