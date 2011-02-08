@@ -5,5 +5,6 @@ Simple Feedback application
 Need to check out the rails app into it's own directory to push
 to Heroku.
 
-2/8/2011
-Testing
+Some hints that might work (testing now):
+http://psionides.jogger.pl/2010/02/04/sharing-code-between-projects-with-git-subtree/
+https://github.com/apenwarr/git-subtree/blob/master/git-subtree.txt
