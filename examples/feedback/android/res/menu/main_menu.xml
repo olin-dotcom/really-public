@@ -4,18 +4,18 @@
     <item
         android:id="@+id/post"
         android:title="@string/menu_post"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/ic_menu_compose"
         />
 
     <item
         android:id="@+id/refresh"
         android:title="@string/menu_refresh"
-        android:icon="@android:drawable/ic_menu_more"
+        android:icon="@drawable/ic_menu_refresh"
         />
     <item
         android:id="@+id/preferences"
         android:title="@string/menu_preferences"
-        android:icon="@android:drawable/ic_menu_preferences"
+        android:icon="@drawable/ic_menu_preferences"
         />
 
 </menu>

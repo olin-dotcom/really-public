@@ -91,7 +91,7 @@ public class FeedbackActivity extends ListActivity
         Log.i(TAG, "Preferences IP Address: " + prefsIpAddress);
 
         if( prefsIpAddress.equals("<unset>") ) {
-            ipAddress = "10.41.88.162";
+            ipAddress = "dotcom-feedback.heroku.com";
         } else {
             ipAddress = prefsIpAddress;
         }

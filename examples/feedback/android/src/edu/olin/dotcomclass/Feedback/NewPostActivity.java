@@ -53,7 +53,7 @@ public class NewPostActivity extends Activity implements View.OnClickListener {
         String prefsIpAddress = prefs.getString("ip_address", "<unset>");
 
         if( prefsIpAddress.equals("<unset>") ) {
-            ipAddress = "10.41.88.162";
+            ipAddress = "dotcom-feedback.heroku.com";
         } else {
             ipAddress = prefsIpAddress;
         }
