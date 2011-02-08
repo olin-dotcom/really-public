@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Feedback</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_preferences">Preferences</string>
+    <string name="menu_post">Post</string>
+    <string name="button_post">Post</string>
 </resources>

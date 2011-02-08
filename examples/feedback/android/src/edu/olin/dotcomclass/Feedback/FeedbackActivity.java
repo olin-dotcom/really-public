@@ -1,14 +1,16 @@
 package edu.olin.dotcomclass.Feedback;
 
-import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -19,14 +21,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 public class FeedbackActivity extends ListActivity
 {
     public static final String TAG = "FEEDBACK";
+    public static final String ID_EXTRA = "edu.olin.dotcomclass.notedescription";
     private HttpClient client;
-    EditText IpEditText;
     ArrayAdapter<String> noteAdapter;
     ArrayList<String> noteArray;
 
@@ -36,18 +36,66 @@ public class FeedbackActivity extends ListActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        IpEditText = (EditText) findViewById(R.id.IpEditText);
         client = new DefaultHttpClient();
+
+        ListView noteListView = getListView();
+
         noteArray = new ArrayList<String>();
-        noteAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, noteArray);
+        noteAdapter = new ArrayAdapter<String>(this, R.layout.note_item, noteArray);
         setListAdapter(noteAdapter);
 
+        noteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id)
+            {
+                Log.i(TAG, "Selected note: " + position);
+
+                Intent i = new Intent(getApplicationContext(), FeedbackViewActivity.class);
+                i.putExtra(ID_EXTRA, ((TextView)view).getText().toString() );
+                startActivity(i);
+            }
+        });
     }
 
-    public void doRefresh(View theButton) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch( item.getItemId() ) {
+            case R.id.refresh:
+                doRefresh();
+                return true;
+            case R.id.preferences:
+                startActivity(new Intent(this, EditPreferences.class));
+                return true;
+            case R.id.post:
+                startActivity(new Intent(this, NewPostActivity.class ));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void doRefresh() {
+        String ipAddress;
+
         Log.i(TAG, "Refresh");
-        String urlText = IpEditText.getText().toString();
-        String url = "http://" + urlText + ":3000/notes.json";
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String prefsIpAddress = prefs.getString("ip_address", "<unset>");
+
+        Log.i(TAG, "Preferences IP Address: " + prefsIpAddress);
+
+        if( prefsIpAddress.equals("<unset>") ) {
+            ipAddress = "10.41.88.162";
+        } else {
+            ipAddress = prefsIpAddress;
+        }
+        String url = "http://" + ipAddress + ":3000/notes.json";
         HttpGet httpGet = new HttpGet(url);
 
         try {
