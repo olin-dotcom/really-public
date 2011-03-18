@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.5'
+gem 'devise'
 
 group :development, :test do
   gem 'sqlite3'
@@ -8,4 +9,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'sqlite3'
   gem 'webrat'
+  gem 'nifty-generators'
 end
+
+gem "mocha", :group => :test
