@@ -1,9 +1,11 @@
 MobileAuth::Application.routes.draw do
   resources :posts
-
   devise_for :users
-  
   root :to => "posts#index"
+  
+  namespace :api do
+    resources :posts, :except => [:edit, :new]
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

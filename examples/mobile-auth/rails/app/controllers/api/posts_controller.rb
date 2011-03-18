@@ -1,19 +1,18 @@
-class PostsController < ApplicationController
+class Api::PostsController < ApplicationController
   
   before_filter :authenticate_user!, :except => [ :index ]
   
+  respond_to :json
+  
   def index
-    @posts = Post.all
+    respond_with(@posts = Post.all)
   end
 
   def show
-    @post = Post.find(params[:id])
+    respond_with(@post = Post.find(params[:id]))
   end
 
-  def new
-    @post = Post.new
-  end
-
+  #fixme
   def create
     @post = current_user.posts.build(params[:post])
     if @post.save
@@ -23,10 +22,7 @@ class PostsController < ApplicationController
     end
   end
 
-  def edit
-    @post = Post.find(params[:id])
-  end
-
+  #fixme
   def update
     @post = Post.find(params[:id])
     if @post.update_attributes(params[:post])
