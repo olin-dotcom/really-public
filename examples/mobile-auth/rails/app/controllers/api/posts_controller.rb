@@ -2,39 +2,62 @@ class Api::PostsController < ApplicationController
   
   before_filter :authenticate_user!, :except => [ :index ]
   
-  respond_to :json
-  
   def index
-    respond_with(@posts = Post.all)
+    @posts = Post.all
+    render :json => @posts
   end
 
   def show
-    respond_with(@post = Post.find(params[:id]))
-  end
-
-  #fixme
-  def create
-    @post = current_user.posts.build(params[:post])
-    if @post.save
-      redirect_to @post, :notice => "Successfully created post."
-    else
-      render :action => 'new'
+    begin
+      @post = Post.find(params[:id])
+      render :json => @post      
+    rescue Exception => e
+      head :not_found
     end
   end
 
-  #fixme
-  def update
-    @post = Post.find(params[:id])
-    if @post.update_attributes(params[:post])
-      redirect_to @post, :notice  => "Successfully updated post."
+  def create
+    @post = current_user.posts.build(:content => params[:content])
+    if @post.save
+      render :json => @post
     else
-      render :action => 'edit'
+      head :bad_request
+    end
+  end
+
+  def update
+    begin
+      @post = Post.find(params[:id])      
+    rescue Exception => e
+      head :not_found
+    end
+    
+    if @post
+      if @post.user == current_user
+        if @post.update_attributes(:content => params[:content])
+          render :json => @post
+        else
+          head :bad_request
+        end
+      else
+        head :unauthorized
+      end
+    else
+      head :not_found
     end
   end
 
   def destroy
-    @post = Post.find(params[:id])
-    @post.destroy
-    redirect_to posts_url, :notice => "Successfully destroyed post."
+    begin
+      @post = Post.find(params[:id])
+      if @post.user == current_user
+        @post.destroy
+        head :ok
+      else
+        head :unauthorized
+      end
+    rescue Exception => e
+      head :not_found
+    end
   end
 end
