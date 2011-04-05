@@ -14,9 +14,9 @@ class CommentsController < ApplicationController
   def create
     @comment = Comment.new(params[:comment])
     if @comment.save
+      flash[:notice] = "Thanks for commenting!"
       respond_to do |format|
-        format.html { redirect_to @comment, 
-          :notice => "Successfully created comment." }
+        format.html { redirect_to @comment }
         format.js
       end
     else
