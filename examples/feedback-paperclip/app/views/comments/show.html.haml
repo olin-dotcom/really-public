@@ -1,15 +1,15 @@
 - title "Comment"
 
 %p
-  %strong Name:
-  = @comment.name
+	%strong= @comment.name
 %p
-  %strong Content:
-  = @comment.content
+	%strong= @comment.content
+%p
+	= image_tag @comment.photo.url(:large)
 
 %p
-  = link_to "Edit", edit_comment_path(@comment)
-  |
-  = link_to "Destroy", @comment, :confirm => 'Are you sure?', :method => :delete
-  |
-  = link_to "View All", comments_path
+	= link_to "Edit", edit_comment_path(@comment)
+	|
+	= link_to "Destroy", @comment, :confirm => 'Are you sure?', :method => :delete
+	|
+	= link_to "View All", comments_path

@@ -1,4 +1,6 @@
-= semantic_form_for @comment do |f|
+= semantic_form_for @comment, :html => { :multipart => true } do |f|
 	= f.inputs do
+		= f.input :photo, :as => :file
 		= f.input :name
-		= f.input :content
+		= f.input :content, :input_html => { :rows => 5}
+	= f.buttons
