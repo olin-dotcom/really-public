@@ -1,5 +1,5 @@
 class Comment < ActiveRecord::Base
-  attr_accessible :name, :content, :photo
+  attr_accessible :name, :caption, :photo
   
   has_attached_file :photo,
     :styles => {

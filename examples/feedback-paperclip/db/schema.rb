@@ -14,7 +14,7 @@ ActiveRecord::Schema.define(:version => 20110407231845) do
 
   create_table "comments", :force => true do |t|
     t.string   "name"
-    t.text     "content"
+    t.string   "caption"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "photo_file_name"

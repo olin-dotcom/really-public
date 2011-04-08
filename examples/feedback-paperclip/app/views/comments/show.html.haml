@@ -1,12 +1,17 @@
 - title "Comment"
 
 %p
-	%strong= @comment.name
-%p
-	%strong= @comment.content
-%p
 	= image_tag @comment.photo.url(:large)
 
+%p
+	= @comment.caption
+%p
+	#{@comment.name}
+	%br/
+	posted
+	= time_ago_in_words @comment.created_at
+	ago
+	
 %p
 	= link_to "Edit", edit_comment_path(@comment)
 	|
