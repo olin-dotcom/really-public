@@ -5,6 +5,7 @@ gem 'sqlite3'
 gem 'formtastic'
 gem 'haml'
 gem 'paperclip'
+gem 'aws-s3'
 
 group :development do
   gem 'nifty-generators'
