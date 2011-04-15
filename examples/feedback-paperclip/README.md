@@ -7,7 +7,7 @@ This uses paperclip to handle files, S3 (optionally) to back the files, and can 
 To use S3
 =========
 
-Add a file in '/config/amazon_s3.yml' with contents that look like:
+Add a file in <code>/config/amazon_s3.yml</code> with contents that look like:
 
 <pre>
 development:
