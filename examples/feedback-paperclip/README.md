@@ -32,3 +32,5 @@ Even better than putting these in files would be to:
   - in <code>app/models/comment.rb</code> specify credentials like <code>ENV['S3_ACCESS_KEY']</code>
   - then set [Heroku environment variables](http://devcenter.heroku.com/articles/config-vars#rack_env_rails_env_merb_env) with
 	- <code>heroku config:add S3_ACCESS_KEY=YOUR_ACCESS_KEY</code>
+
+Now, you don't need to stash your credentials in your git repo, ever.
