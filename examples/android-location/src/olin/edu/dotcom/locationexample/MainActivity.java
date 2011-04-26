@@ -87,7 +87,10 @@ public class MainActivity extends Activity {
             textView.setText(text.toString());
 
             lastLocation = location;
+        } else {
+            Log.v(TAG, "Rejected worse location");
         }
+
     }
 
 
